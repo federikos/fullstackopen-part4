@@ -1,7 +1,18 @@
 const dummy = blogs => {
-    return 1;
+  return 1;
+};
+
+
+const totalLikes = blogs => {
+  return blogs.reduce((acc, blog) => { 
+    if (blog.likes === undefined) {
+      return acc;
+    }
+    return acc + blog.likes 
+  }, 0);
 };
 
 module.exports = {
-    dummy
+  dummy,
+  totalLikes
 };
