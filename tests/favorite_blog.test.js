@@ -6,9 +6,9 @@ describe('favorite blog', () => {
   });
   test('of a bigger list is returns best blog correctly', () => {
     const result = favoriteBlog([
-      {likes: 5},
+      {likes: 2},
       {likes: 3},
-      {likes: 2}
+      {likes: 5}
     ]);
     expect(result).toEqual({likes: 5});
   });

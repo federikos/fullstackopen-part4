@@ -13,9 +13,12 @@ const totalLikes = blogs => {
 };
 
 const favoriteBlog = blogs => {
-  blogs.sort((a, b) => b.likes - a.likes);
-  return blogs[0];
+  return blogs.sort((a, b) => b.likes - a.likes)[0];
 }
+
+// const mostBlogs = blogs => {
+//   blogs.sort
+// }
 
 module.exports = {
   dummy,
