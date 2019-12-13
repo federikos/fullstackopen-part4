@@ -38,9 +38,33 @@ const mostBlogs = blogs => {
   return authors.sort((a, b) => b.blogs - a.blogs)[0];
 }
 
+const mostLikes = blogs => {
+  const authors = [];
+  
+  blogs.forEach(blog => {
+    let isAuthor = false;
+    authors.forEach((author, i) => {
+      if (author.author === blog.author) {
+        isAuthor = true;
+        authors[i] = {...author, likes: author.likes + blog.likes}
+        return;
+      }
+    });
+    if (!isAuthor) {
+      authors.push({
+        author: blog.author,
+        likes: blog.likes
+      })
+    }
+  })
+
+  return authors.sort((a, b) => b.likes - a.likes)[0];
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 };
