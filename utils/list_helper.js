@@ -20,13 +20,14 @@ const mostBlogs = blogs => {
   
   blogs.forEach(blog => {
     let isAuthor = false;
+    
     authors.forEach((author, i) => {
-      if (author.author === blog.author) {
-        isAuthor = true;
-        authors[i] = {...author, blogs: author.blogs + 1}
-        return;
-      }
+      if (author.author !== blog.author) return;
+
+      isAuthor = true;
+      authors[i] = {...author, blogs: author.blogs + 1}
     });
+
     if (!isAuthor) {
       authors.push({
         author: blog.author,
