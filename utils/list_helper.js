@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 const dummy = blogs => {
   return 1;
 };
@@ -7,13 +8,13 @@ const totalLikes = blogs => {
     if (blog.likes === undefined) {
       return acc;
     }
-    return acc + blog.likes 
+    return acc + blog.likes;
   }, 0);
 };
 
 const favoriteBlog = blogs => {
   return blogs.sort((a, b) => b.likes - a.likes)[0];
-}
+};
 
 const mostBlogs = blogs => {
   const authors = [];
@@ -25,19 +26,19 @@ const mostBlogs = blogs => {
       if (author.author !== blog.author) return;
 
       isAuthor = true;
-      authors[i] = {...author, blogs: author.blogs + 1}
+      authors[i] = {...author, blogs: author.blogs + 1};
     });
 
     if (!isAuthor) {
       authors.push({
         author: blog.author,
         blogs: 1
-      })
+      });
     }
-  })
+  });
 
   return authors.sort((a, b) => b.blogs - a.blogs)[0];
-}
+};
 
 const mostLikes = blogs => {
   const authors = [];
@@ -47,7 +48,7 @@ const mostLikes = blogs => {
     authors.forEach((author, i) => {
       if (author.author === blog.author) {
         isAuthor = true;
-        authors[i] = {...author, likes: author.likes + blog.likes}
+        authors[i] = {...author, likes: author.likes + blog.likes};
         return;
       }
     });
@@ -55,12 +56,12 @@ const mostLikes = blogs => {
       authors.push({
         author: blog.author,
         likes: blog.likes
-      })
+      });
     }
-  })
+  });
 
   return authors.sort((a, b) => b.likes - a.likes)[0];
-}
+};
 
 module.exports = {
   dummy,
