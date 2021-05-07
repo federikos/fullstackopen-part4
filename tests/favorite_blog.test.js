@@ -1,18 +1,17 @@
 const favoriteBlog = require('../utils/list_helper').favoriteBlog;
+const blogs = require('../utils/blogs_for_test').blogs;
+const oneBlogArray = require('../utils/blogs_for_test').oneBlogArray;
+const favoriteBlogResult = require('../utils/blogs_for_test').favoriteBlog;
+const oneBlogFavoriteBlog = require('../utils/blogs_for_test').oneBlogFavoriteBlog;
 
 describe('favorite blog', () => {
   test('empty array returns undefined', () => {
     expect(favoriteBlog([])).toEqual(undefined);
   });
   test('of a bigger list is returns best blog correctly', () => {
-    const result = favoriteBlog([
-      {likes: 2},
-      {likes: 3},
-      {likes: 5}
-    ]);
-    expect(result).toEqual({likes: 5});
+    expect(favoriteBlog(blogs)).toEqual(favoriteBlogResult);
   });
   test('when list has only one blog equals that blog', () => {
-    expect(favoriteBlog([{likes: 5}])).toEqual({likes: 5});
+    expect(favoriteBlog(oneBlogArray)).toEqual(oneBlogFavoriteBlog);
   });
 });

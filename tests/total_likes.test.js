@@ -1,5 +1,6 @@
 const totalLikes = require('../utils/list_helper').totalLikes;
-const blogs = require('../utils/blogs_for_test');
+const blogs = require('../utils/blogs_for_test').blogs;
+const oneBlogArray = require('../utils/blogs_for_test').oneBlogArray;
 
 describe('total likes', () => {
   test('empty array returns zero', () => {
@@ -11,10 +12,8 @@ describe('total likes', () => {
     expect(result).toBe(36);
   });
 
-  const listWithOneBlog = [blogs[0]];
-
   test('when list has only one blog equals the likes of that', () => {
-    expect(totalLikes(listWithOneBlog)).toBe(listWithOneBlog[0].likes);
+    expect(totalLikes(oneBlogArray)).toBe(oneBlogArray[0].likes);
   });
 
   test('returns number if one of blog likes property is undefined', () => {
