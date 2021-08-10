@@ -53,6 +53,16 @@ test('missing "likes" property defaults to the value "0"', async () => {
   expect(result.body.likes).toBe(0);
 });
 
+test('missing title and url properties lead to code 400 Bad Request', async () => {
+  const blogWithoutTitleAndUrl = { ...initialBlogs[0] };
+  delete blogWithoutTitleAndUrl.title;
+  delete blogWithoutTitleAndUrl.url;
+
+  await api.post('/api/blogs')
+    .send(blogWithoutTitleAndUrl)
+    .expect(400);
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
