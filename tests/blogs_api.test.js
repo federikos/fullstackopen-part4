@@ -42,9 +42,17 @@ test('POST request to the /api/blogs creates a new blog post', async () => {
 
   const response = await api.get('/api/blogs');
   const titles = response.body.map(blog => blog.title);
-  
+
   expect(response.body).toHaveLength(initialBlogs.length + 1);
   expect(titles).toContain(initialBlogs[0].title);
+});
+
+test('missing "likes" property defaults to the value "0"', async () => {
+  const blogWithoutLikes = { ...initialBlogs[0] };
+  delete blogWithoutLikes.likes;
+  const blogObject = new Blog(blogWithoutLikes);
+  const result = await api.post('/api/blogs').send(blogObject);
+  expect(result.body.likes).toBe(0);
 });
 
 afterAll(() => {
