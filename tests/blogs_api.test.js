@@ -34,9 +34,8 @@ test('the unique identifier property of the blog posts is named id', async () =>
 });
 
 test('POST request to the /api/blogs creates a new blog post', async () => {
-  const blogObject = new Blog(initialBlogs[0]);
   await api.post('/api/blogs')
-    .send(blogObject)
+    .send(initialBlogs[0])
     .expect(201)
     .expect('Content-Type', /application\/json/);
 
@@ -50,8 +49,7 @@ test('POST request to the /api/blogs creates a new blog post', async () => {
 test('missing "likes" property defaults to the value "0"', async () => {
   const blogWithoutLikes = { ...initialBlogs[0] };
   delete blogWithoutLikes.likes;
-  const blogObject = new Blog(blogWithoutLikes);
-  const result = await api.post('/api/blogs').send(blogObject);
+  const result = await api.post('/api/blogs').send(blogWithoutLikes);
   expect(result.body.likes).toBe(0);
 });
 
