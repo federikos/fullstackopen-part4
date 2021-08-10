@@ -63,6 +63,15 @@ test('missing title and url properties lead to code 400 Bad Request', async () =
     .expect(400);
 });
 
+describe('deletion of a blog', () => {
+  test('succeeds with status code 204 if id is valid', async () => {
+    const blogs = await api.get('/api/blogs');
+    const blogToDelete = blogs.body[0];
+    await api.delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204);
+  });
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
