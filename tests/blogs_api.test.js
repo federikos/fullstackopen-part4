@@ -1,13 +1,14 @@
-const app = require('../app');
 const supertest = require('supertest');
 const mongoose = require('mongoose');
 
-const api = supertest(app);
+let api = null;
 
 const Blog = require('../models/blog');
 const initialBlogs = require('../utils/blogs_for_test').blogs;
 
 beforeEach(async () => {
+  const app = require('../app');
+  api = supertest(app);
   await Blog.deleteMany({});
   const blogObjects = initialBlogs.map(blog => new Blog(blog));
   const promiseArr = blogObjects.map(blog => blog.save());
