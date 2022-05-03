@@ -10,6 +10,10 @@ usersRouter.get('/', async (request, response) => {
 usersRouter.post('/', async (request, response) => {
   const body = request.body;
 
+  if(!body.password) {
+    return response.status(400).json({ error: 'password must be given' });
+  }
+  
   if(body.password.length < 3) {
     return response.status(400).json({ error: 'password must be at least 3 characters long' });
   }
@@ -27,7 +31,7 @@ usersRouter.post('/', async (request, response) => {
     const savedUser = await user.save();
     
     if(savedUser) {
-      return response.json(savedUser);
+      return response.status(201).json(savedUser);
     }
   } catch(error) {
     return response.status(400).json({ error: error.message });
