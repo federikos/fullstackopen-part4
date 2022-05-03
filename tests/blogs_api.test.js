@@ -1,5 +1,6 @@
 const supertest = require('supertest');
 const mongoose = require('mongoose');
+const { blogsInDb } = require('./test_helper');
 
 let api = null;
 
@@ -23,13 +24,13 @@ test('blogs are returned as json', async () => {
 });
 
 test('there are the right amount of blogs', async () => {
-  const response = await api.get('/api/blogs');
-  expect(response.body).toHaveLength(initialBlogs.length);
+  const blogs = await blogsInDb();
+  expect(blogs).toHaveLength(initialBlogs.length);
 });
 
 test('the unique identifier property of the blog posts is named id', async () => {
-  const response = await api.get('/api/blogs');
-  for (let blog of response.body) {
+  const blogs = await blogsInDb();
+  for (let blog of blogs) {
     expect(blog.id).toBeDefined();
   }
 });
@@ -40,10 +41,10 @@ test('POST request to the /api/blogs creates a new blog post', async () => {
     .expect(201)
     .expect('Content-Type', /application\/json/);
 
-  const response = await api.get('/api/blogs');
-  const titles = response.body.map(blog => blog.title);
+  const blogsAtEnd = await blogsInDb();
+  const titles = blogsAtEnd.map(blog => blog.title);
 
-  expect(response.body).toHaveLength(initialBlogs.length + 1);
+  expect(blogsAtEnd).toHaveLength(initialBlogs.length + 1);
   expect(titles).toContain(initialBlogs[0].title);
 });
 
@@ -66,17 +67,25 @@ test('missing title and url properties lead to code 400 Bad Request', async () =
 
 describe('deletion of a blog', () => {
   test('succeeds with status code 204 if id is valid', async () => {
-    const blogs = await api.get('/api/blogs');
-    const blogToDelete = blogs.body[0];
+    const blogsAtStart = await blogsInDb();
+    const blogToDelete = blogsAtStart[0];
+
     await api.delete(`/api/blogs/${blogToDelete.id}`)
       .expect(204);
+
+    const blogsAtEnd = await blogsInDb();
+
+    expect(blogsAtEnd).toHaveLength(blogsAtStart.length - 1);
+
+    const titles = blogsAtEnd.map(blog => blog.title);
+    expect(titles).not.toContain(blogToDelete.title);
   });
 });
 
 describe('updating of a blog', () => {
   test('succeeds with status code 200 if id is valid', async () => {
-    const blogs = await api.get('/api/blogs');
-    const blogToUpdate = { ...blogs.body[0], likes: blogs.body[0].likes + 1 };
+    const blogsAtStart = await blogsInDb();
+    const blogToUpdate = { ...blogsAtStart[0], likes: blogsAtStart[0].likes + 1 };
     
     await api
       .put(`/api/blogs/${blogToUpdate.id}`)
