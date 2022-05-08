@@ -27,14 +27,10 @@ usersRouter.post('/', async (request, response) => {
     passwordHash
   });
 
-  try {
-    const savedUser = await user.save();
+  const savedUser = await user.save();
     
-    if(savedUser) {
-      return response.status(201).json(savedUser);
-    }
-  } catch(error) {
-    return response.status(400).json({ error: error.message });
+  if(savedUser) {
+    return response.status(201).json(savedUser);
   }
 });
 
